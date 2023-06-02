@@ -25,6 +25,8 @@ Route::post('/producto',[ProductController::class,'store'])->name('productos.sto
 Route::delete('/producto/delete/{id}',[ProductController::class,'delete'])->name('producto.delete');
 Route::get('producto/{id}', [ProductController::class, 'view'])->name('producto.view');
 Route::put('producto/update/{id}', [ProductController::class, 'update'])->name('producto.update');
+Route::get('/excel', [ProductController::class, 'exportE']);
+
 
 
 Route::get('/categoria', [CategoriaController::class, 'index']);

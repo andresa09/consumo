@@ -9,7 +9,7 @@
 
         <div class="card-header">
             <h1 class="text-center">
-                INGRESAR UN PRODUCTO
+                INGRESO DE PRODUCTO
             </h1>
         </div>
 
@@ -17,6 +17,8 @@
             <form action="{{ route('productos.store') }}" method="post" >
             
                 @csrf
+                @method('POST')
+                
                 
                 <div class="container">
                     <div class="row">
@@ -26,7 +28,13 @@
                         </div>
                         <div class="col-12">
                             <label class="w-100" for="id_categoria"> CATEGORIA </label>
-                            <input type="text" class="form-control" name="id_categoria" id="id_categoria">
+                            {{-- <input type="text" class="form-control" name="id_categoria" id="id_categoria"> --}}
+                            <select class="form-select" name="id_categoria" aria-label="Default select example" >
+                                <option selected>SELECCIONE UNA CATEGORIA</option>
+                                <option value="1">VENTAS</option>
+                                <option value="2">INGRESOS</option>
+                                <option value="3">COMPRAS</option>
+                              </select>
                         </div>
                         <div class="col-12">
                             <label class="w-100" for="precio">PRECIO</label>
@@ -35,9 +43,10 @@
                         <div class="col-12">
                             <label class="w-100" for="estado">ESTADO</label>
                             <select name="estado" class="form-control" id="estado">
-                                <option value="aprobado">Aprobado</option>
-                                <option value="no aprobado">No aprobado</option>
-                                <option value="en gestion">En gestion</option>
+                                <option selected>SELECCIONE UN ESTADO</option>
+                                <option value="APROBADO">APROBADO</option>
+                                <option value="NO APROBADO">NO APROBADO</option>
+                                <option value="EN GESTION">EN GESTION</option>
                             </select>
                 
                         </div>
@@ -47,8 +56,10 @@
                         </div>
                         
                         <div class="col-12 mt-2" > 
-                            <a href="{{ route('productos.index') }}" class="btn rounded-pill btn-warning" >VOLVER AL INICIO <i class="bi bi-reply" style="color: red;"></i></a>
+                            
                             <input class="btn rounded-pill btn-success" type="submit" value="GUARDAR ">
+                            <a href="{{ route('productos.index') }}" class="btn rounded-pill btn-danger" >VOLVER AL INICIO <i class="bi bi-reply" style="color: red;"></i></a>
+                            
                         
                         </div>
                     </div>

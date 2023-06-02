@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ProductoExport;
 
 class ProductController extends Controller
 {
@@ -13,14 +15,32 @@ class ProductController extends Controller
         $url = env('URL_SERVER_API','http://127.0.0.1');
         $response= Http::get($url.'/producto/all');
         $data=$response->json();
-        return view('productos',compact('data')); 
+        return view('productosIndex',compact('data')); 
     } 
+
+    public function exportE(){
+        $url = env('URL_SERVER_API','http://127.0.0.1');
+        $response= Http::get($url.'/producto/excel-export');
+
+       return Excel::download(new ProductoExport(), 'TelafaxDownload.xlsx');
+       
+
+       
+        // return view('productos',compact('data')); 
+    }
     
-    //esta funcion me permite pasar la vista donde se va a crear el nuevo producto
-    public function create(){
-        return view('producto');
+    public function delete($id){
+        $url = env('URL_SERVER_API','http://127.0.0.1');
+        $response= Http::delete($url.'/producto/delete/'.$id);
+        return redirect()->route('productos.index');
     }
 
+    //esta funcion me permite pasar la vista donde se va a crear el nuevo producto
+    public function create(){
+        return view('productoCreate');
+    }
+
+    
     //esta funcion consume la api tambien en la ruta que contiene el metodo store y me crea los registros de los productos 
     public function store (Request $request){
         //aqui se pasa el url del api
@@ -33,27 +53,20 @@ class ProductController extends Controller
                     'estado' => $request -> estado,
                     'establecimiento_final' => $request -> establecimiento_final,
         ]);
+
         //aqui donde se almacena los datos creados que se van a enviar en formato json al api 
         $response->json();
         //aqui redireciona a una ruta web creada 
         return redirect()->route('productos.index');
     }
 
-   
 
-
-
-    public function delete($id){
-        $url = env('URL_SERVER_API','http://127.0.0.1');
-        $response= Http::delete($url.'/producto/delete/'.$id);
-        return redirect()->route('productos.index');
-    }
 
     public function view($id){
         $url = env('URL_SERVER_API','http://127.0.0.1');
         $response= Http::get($url.'/producto/SelectOne/'.$id);
         $data=$response->json();
-        return view('productovista',compact('data')); 
+        return view('productovistaEdit',compact('data')); 
     }
 
     public function update (Request $request ){
@@ -70,4 +83,6 @@ class ProductController extends Controller
         $data=$response->json();
         return redirect()->route('productos.index');
     }
+    
+    
 }
